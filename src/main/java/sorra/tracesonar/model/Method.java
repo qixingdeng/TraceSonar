@@ -41,6 +41,17 @@ public class Method {
 
     String desc = this.desc.replace("Ljava/lang/", "");
 
+    return String.format("<- %s #%s", owner.replace('/', '.'), name);
+  }
+
+  public String toString2() {
+    String name = methodName;
+    if (methodName.contains("<") || methodName.contains(">")) {
+      name = methodName.replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    String desc = this.desc.replace("Ljava/lang/", "");
+
     return String.format("<- %s #%s %s", owner.replace('/', '.'), name, desc);
   }
 }

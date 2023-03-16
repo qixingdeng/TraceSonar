@@ -1,10 +1,10 @@
 package sorra.tracesonar.core;
 
+import sorra.tracesonar.model.Query;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
-import sorra.tracesonar.model.Query;
 
 /**
  * Trace-back search and print the result tree
@@ -71,8 +71,16 @@ public class Traceback {
   }
 
   private void printTree(TreeNode node) {
-    printer.print(node);
-    node.callers.forEach(this::printTree);
+    if(node.depth == 0 && node.callers.stream().filter(caller -> !caller.self.owner.contains(node.self.owner)).count() == 0) {
+      return;
+    }
+
+    if(node.depth == 0) {
+      printer.print(node);
+    }
+
+    //node.callers.forEach(this::printTree);
+    node.callers.stream().filter(caller -> !caller.self.owner.contains(node.self.owner)).forEach(this::printTree);
   }
 
   private interface Printer {
